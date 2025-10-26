@@ -1,0 +1,52 @@
+import java.util.*;
+
+public class GradeManagementSystem {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of students: ");
+        int n = sc.nextInt();
+        sc.nextLine(); // consume leftover newline
+
+        String[] names = new String[n];
+        double[] marks = new double[n];
+        char[] grades = new char[n];
+
+        // Input student details
+        for (int i = 0; i < n; i++) {
+            System.out.println("\nEnter details for Student " + (i + 1));
+            System.out.print("Name: ");
+            names[i] = sc.nextLine();
+            System.out.print("Marks (0-100): ");
+            marks[i] = sc.nextDouble();
+            sc.nextLine(); // consume newline
+
+            // Assign grade based on marks
+            if (marks[i] >= 90) grades[i] = 'A';
+            else if (marks[i] >= 75) grades[i] = 'B';
+            else if (marks[i] >= 60) grades[i] = 'C';
+            else if (marks[i] >= 45) grades[i] = 'D';
+            else grades[i] = 'F';
+        }
+
+        // Calculate average
+        double total = 0;
+        for (double m : marks) {
+            total += m;
+        }
+        double average = total / n;
+
+        // Display results
+        System.out.println("\n--------------------------------------------------");
+        System.out.printf("%-20s %-10s %-10s\n", "Name", "Marks", "Grade");
+        System.out.println("--------------------------------------------------");
+        for (int i = 0; i < n; i++) {
+            System.out.printf("%-20s %-10.2f %-10c\n", names[i], marks[i], grades[i]);
+        }
+        System.out.println("--------------------------------------------------");
+        System.out.printf("Class Average: %.2f\n", average);
+        System.out.println("--------------------------------------------------");
+
+        sc.close();
+    }
+}
