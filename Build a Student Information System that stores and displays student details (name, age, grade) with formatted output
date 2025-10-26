@@ -1,0 +1,52 @@
+import java.util.*;
+
+class Student {
+    private String name;
+    private int age;
+    private String grade;
+
+    public Student(String name, int age, String grade) {
+        this.name = name;
+        this.age = age;
+        this.grade = grade;
+    }
+
+    public String getName() { return name; }
+    public int getAge() { return age; }
+    public String getGrade() { return grade; }
+}
+
+class StudentInformationSystem {
+    private List<Student> students;
+
+    public StudentInformationSystem() {
+        students = new ArrayList<>();
+    }
+
+    public void addStudent(String name, int age, String grade) {
+        students.add(new Student(name, age, grade));
+    }
+
+    public void displayStudents() {
+        System.out.println("------------------------------------------------------");
+        System.out.printf("%-20s %-10s %-10s\n", "Name", "Age", "Grade");
+        System.out.println("------------------------------------------------------");
+        for (Student s : students) {
+            System.out.printf("%-20s %-10d %-10s\n", s.getName(), s.getAge(), s.getGrade());
+        }
+        System.out.println("------------------------------------------------------");
+    }
+}
+
+public class JavaBasics {
+    public static void main(String[] args) {
+        StudentInformationSystem sis = new StudentInformationSystem();
+
+        sis.addStudent("Rahul Sharma", 17, "A");
+        sis.addStudent("Sneha Patel", 16, "B+");
+        sis.addStudent("Arjun Mehta", 18, "A+");
+        sis.addStudent("Priya Nair", 17, "A");
+
+        sis.displayStudents();
+    }
+}
