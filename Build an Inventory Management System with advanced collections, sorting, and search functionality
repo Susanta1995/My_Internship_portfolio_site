@@ -1,0 +1,202 @@
+import java.util.*;
+
+// Inventory Item Class
+class Item {
+    private int id;
+    private String name;
+    private String category;
+    private int quantity;
+    private double price;
+
+    public Item(int id, String name, String category, int quantity, double price) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public String getCategory() { return category; }
+    public int getQuantity() { return quantity; }
+    public double getPrice() { return price; }
+
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setPrice(double price) { this.price = price; }
+
+    public void show() {
+        System.out.println(id + " | " + name + " | " + category + " | Qty: " +
+                quantity + " | Price: ₹" + price);
+    }
+}
+
+
+// Inventory Manager Class
+class InventoryManager {
+    private ArrayList<Item> items = new ArrayList<>();
+    private HashMap<Integer, Item> itemMap = new HashMap<>();
+
+    // Add Item
+    public void addItem(Item item) {
+        items.add(item);
+        itemMap.put(item.getId(), item);
+        System.out.println("Item added successfully!");
+    }
+
+    // Delete Item
+    public void deleteItem(int id) {
+        if (itemMap.containsKey(id)) {
+            Item item = itemMap.remove(id);
+            items.remove(item);
+            System.out.println("Item removed!");
+        } else {
+            System.out.println("Item not found!");
+        }
+    }
+
+    // Search by ID
+    public void searchById(int id) {
+        if (itemMap.containsKey(id)) {
+            itemMap.get(id).show();
+        } else {
+            System.out.println("Item not found!");
+        }
+    }
+
+    // Search by Name
+    public void searchByName(String name) {
+        boolean found = false;
+        for (Item item : items) {
+            if (item.getName().equalsIgnoreCase(name)) {
+                item.show();
+                found = true;
+            }
+        }
+        if (!found) System.out.println("No item found with that name!");
+    }
+
+    // Search by Category
+    public void searchByCategory(String category) {
+        boolean found = false;
+        for (Item item : items) {
+            if (item.getCategory().equalsIgnoreCase(category)) {
+                item.show();
+                found = true;
+            }
+        }
+        if (!found) System.out.println("No items in this category!");
+    }
+
+    // Sort by Price
+    public void sortByPrice() {
+        items.sort(Comparator.comparingDouble(Item::getPrice));
+        System.out.println("Sorted by price (Low → High):");
+        showAll();
+    }
+
+    // Sort by Name
+    public void sortByName() {
+        items.sort(Comparator.comparing(Item::getName));
+        System.out.println("Sorted by name:");
+        showAll();
+    }
+
+    // Display All Items
+    public void showAll() {
+        if (items.isEmpty()) {
+            System.out.println("No items in inventory!");
+            return;
+        }
+        for (Item i : items) i.show();
+    }
+
+}
+
+
+// Main Class (Menu System)
+public class InventoryManagement {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        InventoryManager manager = new InventoryManager();
+
+        // Adding sample items
+        manager.addItem(new Item(1, "Laptop", "Electronics", 10, 45000));
+        manager.addItem(new Item(2, "Keyboard", "Electronics", 25, 799));
+        manager.addItem(new Item(3, "Shirt", "Clothing", 50, 499));
+        manager.addItem(new Item(4, "Notebook", "Stationery", 100, 50));
+
+        while (true) {
+            System.out.println("\n=== INVENTORY MENU ===");
+            System.out.println("1. Add Item");
+            System.out.println("2. Delete Item");
+            System.out.println("3. Search by ID");
+            System.out.println("4. Search by Name");
+            System.out.println("5. Search by Category");
+            System.out.println("6. Sort by Price");
+            System.out.println("7. Sort by Name");
+            System.out.println("8. View All Items");
+            System.out.println("9. Exit");
+            System.out.print("Enter choice: ");
+
+            int ch = sc.nextInt();
+            sc.nextLine(); // Clear buffer
+
+            switch (ch) {
+                case 1:
+                    System.out.print("Enter ID: ");
+                    int id = sc.nextInt(); sc.nextLine();
+                    System.out.print("Enter Name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Enter Category: ");
+                    String cat = sc.nextLine();
+                    System.out.print("Enter Quantity: ");
+                    int qty = sc.nextInt();
+                    System.out.print("Enter Price: ");
+                    double price = sc.nextDouble();
+
+                    manager.addItem(new Item(id, name, cat, qty, price));
+                    break;
+
+                case 2:
+                    System.out.print("Enter ID to delete: ");
+                    manager.deleteItem(sc.nextInt());
+                    break;
+
+                case 3:
+                    System.out.print("Enter ID: ");
+                    manager.searchById(sc.nextInt());
+                    break;
+
+                case 4:
+                    System.out.print("Enter Name: ");
+                    manager.searchByName(sc.nextLine());
+                    break;
+
+                case 5:
+                    System.out.print("Enter Category: ");
+                    manager.searchByCategory(sc.nextLine());
+                    break;
+
+                case 6:
+                    manager.sortByPrice();
+                    break;
+
+                case 7:
+                    manager.sortByName();
+                    break;
+
+                case 8:
+                    manager.showAll();
+                    break;
+
+                case 9:
+                    System.out.println("Exit successful!");
+                    return;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
+}
